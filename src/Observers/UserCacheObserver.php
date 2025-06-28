@@ -29,7 +29,6 @@ class UserCacheObserver
      */
     public function saved(Model $user): void
     {
-        // Eğer roles relationship'i dirty ise cache temizle
         if ($user->relationLoaded('roles') && $user->isDirty()) {
             $this->clearUserCache($user);
         }
@@ -40,7 +39,6 @@ class UserCacheObserver
      */
     protected function clearUserCache(Model $user): void
     {
-        // Trait'lerin kullanılıp kullanılmadığını kontrol et
         $traits = class_uses_recursive($user);
 
         if (in_array(CacheablePermissions::class, $traits)) {

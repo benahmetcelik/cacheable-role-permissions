@@ -11,7 +11,6 @@ trait CacheableRoles
      */
     public static function bootCacheableRoles()
     {
-        // Model events'lerini dinle
         static::saved(function ($model) {
             if (config('cacheable-permissions.auto_clear_cache', true)) {
                 $model->clearRoleCache();
@@ -94,7 +93,7 @@ trait CacheableRoles
     {
         $result = parent::assignRole(...$roles);
         $this->clearRoleCache();
-        $this->clearPermissionCache(); // Role değişince permission cache'i de temizle
+        $this->clearPermissionCache();
         return $result;
     }
 
@@ -105,7 +104,7 @@ trait CacheableRoles
     {
         $result = parent::removeRole($role);
         $this->clearRoleCache();
-        $this->clearPermissionCache(); // Role değişince permission cache'i de temizle
+        $this->clearPermissionCache();
         return $result;
     }
 }

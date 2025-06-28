@@ -14,7 +14,6 @@ trait CacheablePermissions
      */
     public static function bootCacheablePermissions()
     {
-        // Model events'lerini dinle
         static::saved(function ($model) {
             if (config('cacheable-permissions.auto_clear_cache', true)) {
                 $model->clearPermissionCache();
@@ -71,14 +70,12 @@ trait CacheablePermissions
     {
         $pattern = "user_perm_*:{$this->getKey()}:*";
 
-        // Memory cache temizle
         static::$permissionCache = array_filter(
             static::$permissionCache,
             fn($key) => !str_contains($key, ":{$this->getKey()}:"),
             ARRAY_FILTER_USE_KEY
         );
 
-        // Cache driver'a göre temizleme
         $driver = config('cacheable-permissions.cache_driver', 'redis');
 
         if ($driver === 'redis' && config('cache.default') === 'redis') {
